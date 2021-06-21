@@ -1,0 +1,38 @@
+.modal {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  text-align: left;
+}
+.contents {
+  height: auto;
+  min-height: 18%;
+  width: 70%;
+  background-color: #332072;
+  max-width: 35vw;
+  padding: 0 1rem;
+}
+.header {
+  text-align: left;
+  margin: 1rem 0;
+  font-size: 1.5rem;
+}
+.content {
+  font-size: 1rem;
+}
+.footer {
+  text-align: right;
+}
+.footer button {
+  padding: 0.3rem;
+  border: none;
+  background-color: rosybrown;
+  color: white;
+  margin-bottom: 0.7rem;
+}

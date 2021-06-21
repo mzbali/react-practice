@@ -1,0 +1,9 @@
+.card {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  width: 50%;
+  border-radius: 12px;
+  background-color: rgb(78, 25, 148);
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.25);
+  margin: 20px;
+  padding: 10px 5px;
+}
