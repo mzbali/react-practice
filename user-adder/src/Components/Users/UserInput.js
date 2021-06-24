@@ -1,20 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import styles from './UserInput.module.css';
 import Card from '../UI/Card';
 import UserModal from '../UI/UserModal';
+import Wrapper from '../Helpers/Wrapper';
 
 const UserInput = (props) => {
-  const [userName, setUserName] = useState('');
-  const [age, setAge] = useState('');
+  const usernameInput = useRef();
+  const ageInput = useRef();
   const [modal, setModal] = useState();
-  const userNameHandler = (event) => {
-    setUserName(event.target.value);
-  };
-  const ageHandler = (event) => {
-    setAge(event.target.value);
-  };
   const dataHandler = (event) => {
     event.preventDefault();
+    const userName = usernameInput.current.value;
+    const age = ageInput.current.value;
     if (userName.trim().length * age.trim().length <= 0) {
       const errMsg = 'Please Enter a valid name or age.';
       return setModal(errMsg);
@@ -25,33 +22,35 @@ const UserInput = (props) => {
     }
     const data = {
       name: userName,
-      age: parseFloat(age),
-      id: Math.random(),
+      age: +age,
+      id: Math.random().toString(),
     };
     props.onSubmit(data);
-    setUserName('');
-    setAge('');
+    usernameInput.current.value = '';
+    ageInput.current.value = '';
   };
   const modalClose = () => {
     setModal();
   };
   return (
-    <Card>
+    <Wrapper>
       {modal && <UserModal modalMsg={modal} onClose={modalClose} />}
-      <form className={styles.inputControls} onSubmit={dataHandler}>
-        <div className={styles.inputControl}>
-          <label>UserName</label>
-          <input onChange={userNameHandler} value={userName} />
-        </div>
-        <div className={styles.inputControl}>
-          <label>Age</label>
-          <input type="number" onChange={ageHandler} value={age} />
-        </div>
-        <div className={styles.inputControl}>
-          <button type="submit">Add User</button>
-        </div>
-      </form>
-    </Card>
+      <Card>
+        <form className={styles.inputControls} onSubmit={dataHandler}>
+          <div className={styles.inputControl}>
+            <label>UserName</label>
+            <input ref={usernameInput} />
+          </div>
+          <div className={styles.inputControl}>
+            <label>Age</label>
+            <input type="number" ref={ageInput} />
+          </div>
+          <div className={styles.inputControl}>
+            <button type="submit">Add User</button>
+          </div>
+        </form>
+      </Card>
+    </Wrapper>
   );
 };
 

@@ -1,8 +1,9 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import classes from './UserModal.module.css';
 import Card from './Card';
 
-const UserModal = (props) => {
+const Modal = (props) => {
   return (
     <div className={classes.modal} onClick={props.onClose}>
       <Card className={classes.contents} onClick={(e) => e.stopPropagation()}>
@@ -19,6 +20,17 @@ const UserModal = (props) => {
         </footer>
       </Card>
     </div>
+  );
+};
+
+const UserModal = (props) => {
+  return (
+    <React.Fragment>
+      {ReactDOM.createPortal(
+        <Modal modalMsg={props.modalMsg} onClose={props.onClose} />,
+        document.getElementById('modal')
+      )}
+    </React.Fragment>
   );
 };
 export default UserModal;
