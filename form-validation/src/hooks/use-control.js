@@ -1,14 +1,14 @@
 import { useState } from 'react';
 
-const useInput = (valueValidity) => {
-  const [value, setValue] = useState('');
+const useInput = (validateValue) => {
+  const [enteredValue, setEnteredValue] = useState('');
   const [isTouched, setIsTouched] = useState(false);
 
-  const isValid = valueValidity(value);
-  const isNotValid = isTouched && !isValid;
+  const valueIsValid = validateValue(enteredValue);
+  const hasError = isTouched && !valueIsValid;
 
   const valueChangeHandler = (event) => {
-    setValue(event.target.value);
+    setEnteredValue(event.target.value);
   };
 
   const inputBlurHandler = () => {
@@ -16,20 +16,17 @@ const useInput = (valueValidity) => {
   };
 
   const reset = () => {
-    setValue('');
+    setEnteredValue('');
     setIsTouched(false);
   };
 
-  const valueInputStyle = isNotValid ? 'form-control invalid' : 'form-control';
-
   return {
-    value,
-    isValid,
-    isNotValid,
+    enteredValue,
+    valueIsValid,
+    hasError,
     valueChangeHandler,
     inputBlurHandler,
     reset,
-    valueInputStyle,
   };
 };
 

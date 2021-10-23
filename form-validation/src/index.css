@@ -82,6 +82,7 @@ button:active {
 button:disabled {
   background-color: #747279;
   border-color: #747279;
+  color: #a6a2af;
   cursor: not-allowed;
 }
 
