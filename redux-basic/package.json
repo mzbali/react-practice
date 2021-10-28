@@ -1,0 +1,10 @@
+{
+  "name": "redux-basic",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "mzbali",
+  "license": "MIT",
+  "dependencies": {
+    "redux": "^4.1.1"
+  }
+}
