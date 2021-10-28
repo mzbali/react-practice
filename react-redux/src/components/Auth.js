@@ -1,6 +1,6 @@
 import { useRef } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { authActions } from '../store';
+import { useDispatch } from 'react-redux';
+import { authActions } from '../store/auth';
 import classes from './Auth.module.css';
 
 const Auth = () => {
@@ -12,8 +12,8 @@ const Auth = () => {
   const submitHandler = (event) => {
     event.preventDefault();
     if (
-      emailRef.current.value.trim() === 0 &&
-      emailRef.current.value.trim() < 5
+      emailRef.current.value.trim() === '' &&
+      passRef.current.value.trim().length < 5
     ) {
       return;
     }
