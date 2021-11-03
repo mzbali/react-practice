@@ -41,9 +41,9 @@ body {
 .btn--flat {
   cursor: pointer;
   font: inherit;
-  color: teal;
+  color: white;
   border: none;
-  background-color: none;
+  background-color: rgb(5, 158, 158);
   text-decoration: none;
   padding: 0.75rem 1.5rem;
   border-radius: 4px;
