@@ -1,49 +1,58 @@
 import { useRef, useState } from 'react';
-import useHttp from '../../hooks/use-http';
-import { signRequest } from '../../lib/api';
 import FBLoading from '../UI/FBLoading';
 import classes from './AuthForm.module.css';
 
 const AuthForm = () => {
   const [isLogin, setIsLogin] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+
   const emailInputRef = useRef();
   const passwordInputRef = useRef();
-  const {
-    sendRequest: sendSignRequest,
-    status: signStatus,
-    error: signError,
-    data: signData,
-    errorReset,
-  } = useHttp(signRequest);
 
   const switchAuthModeHandler = () => {
-    errorReset();
     setIsLogin((prevState) => !prevState);
   };
 
   const submitHandler = async (event) => {
     event.preventDefault();
-    const reqData = {
-      email: emailInputRef.current.value,
-      password: passwordInputRef.current.value,
-      login: null,
-    };
+
+    const enteredEmail = emailInputRef.current.value;
+    const enteredPassword = passwordInputRef.current.value;
+
+    // optional: Add validation
+
+    setIsLoading(true);
+    let url;
     if (isLogin) {
-      reqData.login = true;
-      await sendSignRequest(reqData);
-      console.log(signData);
+      url =
+        'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyA4hYny7LLFt-A0LWwkrb3_SWgCfpQR4Aw';
     } else {
-      reqData.login = false;
-      await sendSignRequest(reqData);
-      if (signData) {
-        console.log(signData.idToken);
+      url =
+        'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyA4hYny7LLFt-A0LWwkrb3_SWgCfpQR4Aw';
+    }
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        body: JSON.stringify({
+          email: enteredEmail,
+          password: enteredPassword,
+          returnSecureToken: true,
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error);
       }
+      console.log(data);
+      setIsLoading(false);
+    } catch (error) {
+      setIsLoading(false);
+      alert(error.message);
     }
   };
-
-  if (signError) {
-    alert(signError);
-  }
 
   return (
     <section className={classes.auth}>
@@ -63,7 +72,7 @@ const AuthForm = () => {
           />
         </div>
         <div className={classes.actions}>
-          {signStatus === 'pending' ? (
+          {isLoading ? (
             <FBLoading />
           ) : (
             <button>{isLogin ? 'Login' : 'Create Account'}</button>
