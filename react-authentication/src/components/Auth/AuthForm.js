@@ -1,13 +1,17 @@
-import { useRef, useState } from 'react';
+import { useContext, useRef, useState } from 'react';
 import FBLoading from '../UI/FBLoading';
+import AuthContext from '../../store/auth-context';
+
 import classes from './AuthForm.module.css';
 
 const AuthForm = () => {
-  const [isLogin, setIsLogin] = useState(true);
-  const [isLoading, setIsLoading] = useState(false);
+  const authCtx = useContext(AuthContext);
 
   const emailInputRef = useRef();
   const passwordInputRef = useRef();
+
+  const [isLogin, setIsLogin] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   const switchAuthModeHandler = () => {
     setIsLogin((prevState) => !prevState);
@@ -44,8 +48,9 @@ const AuthForm = () => {
       });
       const data = await response.json();
       if (!response.ok) {
-        throw new Error(data.error);
+        throw new Error(data.error.message);
       }
+      authCtx.login(data.idToken);
       console.log(data);
       setIsLoading(false);
     } catch (error) {
