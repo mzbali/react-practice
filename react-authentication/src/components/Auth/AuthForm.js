@@ -1,10 +1,12 @@
 import { useContext, useRef, useState } from 'react';
 import FBLoading from '../UI/FBLoading';
 import AuthContext from '../../store/auth-context';
+import { useHistory } from 'react-router-dom';
 
 import classes from './AuthForm.module.css';
 
 const AuthForm = () => {
+  const history = useHistory();
   const authCtx = useContext(AuthContext);
 
   const emailInputRef = useRef();
@@ -50,9 +52,10 @@ const AuthForm = () => {
       if (!response.ok) {
         throw new Error(data.error.message);
       }
-      authCtx.login(data.idToken);
-      console.log(data);
       setIsLoading(false);
+      const expTime = new Date(new Date().getTime() + +data.expiresIn * 1000);
+      authCtx.login(data.idToken, expTime.toISOString());
+      history.replace('/');
     } catch (error) {
       setIsLoading(false);
       alert(error.message);
