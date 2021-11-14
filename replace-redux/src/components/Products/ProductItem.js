@@ -1,15 +1,14 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
-
 import Card from '../UI/Card';
 import './ProductItem.css';
-import { toggleFav } from '../../store/actions/products';
+import useStore from '../../store/use-store';
 
-const ProductItem = props => {
-  const dispatch = useDispatch();
+const ProductItem = (props) => {
+  console.log('Rendering');
+  const dispatch = useStore(false)[1]; //no rendering just for state value change, just accessing the dispatch function
 
   const toggleFavHandler = () => {
-    dispatch(toggleFav(props.id));
+    dispatch('TOGGLE_FAV', props.id);
   };
 
   return (
@@ -28,4 +27,4 @@ const ProductItem = props => {
   );
 };
 
-export default ProductItem;
+export default React.memo(ProductItem); // only render if data changes
